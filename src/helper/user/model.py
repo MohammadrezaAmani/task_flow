@@ -1,5 +1,6 @@
-from src.base import BaseModel, BaseUser
 from tortoise import fields
+
+from src.base import BaseModel, BaseUser
 
 
 class User(BaseModel, BaseUser):

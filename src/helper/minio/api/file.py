@@ -5,6 +5,8 @@ from fastapi import APIRouter, Depends
 from fastapi import File as FastAPIFile
 from fastapi import HTTPException, Query, Request, UploadFile
 from fastapi.responses import StreamingResponse
+from tortoise.queryset import Q
+
 from src.config.settings import MINIO_BASE_BUCKETS
 from src.helper import (
     ActionEnum,
@@ -18,7 +20,6 @@ from src.helper.minio import File, FileCreateScheme, FileResponseScheme
 from src.helper.paginate import Paginated, Paginator
 from src.helper.user import Status
 from src.helper.user.model import User
-from tortoise.queryset import Q
 
 
 def get_file_type(file_name: str) -> str:

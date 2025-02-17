@@ -1,8 +1,9 @@
 from enum import Enum
 
+from tortoise import fields, models
+
 from src.config import USER_MODEL
 from src.helper.user.model import User
-from tortoise import fields, models
 
 
 class ActionEnum(str, Enum):

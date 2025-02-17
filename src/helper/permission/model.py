@@ -1,5 +1,6 @@
-from src.base import BaseModel
 from tortoise import fields
+
+from src.base import BaseModel
 
 
 class Permission(BaseModel):

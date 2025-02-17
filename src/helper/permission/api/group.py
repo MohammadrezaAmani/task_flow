@@ -1,6 +1,8 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
+from tortoise.queryset import Q
+
 from src.helper import (
     ActionEnum,
     Filter,
@@ -13,7 +15,6 @@ from src.helper import (
 from src.helper.paginate import Paginated
 from src.helper.permission import Group, GroupCreateScheme, GroupResponseScheme
 from src.helper.user import Status
-from tortoise.queryset import Q
 
 router = APIRouter()
 

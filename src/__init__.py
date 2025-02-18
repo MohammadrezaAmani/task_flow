@@ -9,7 +9,7 @@ from src.config import (
     remove_queries_from_swagger,
 )
 
-app = FastAPI(title="BIONEX Backend", lifespan=lifespan, debug=DEBUG)
+app = FastAPI(title="TASKFLOW Backend", lifespan=lifespan, debug=DEBUG)
 if DEBUG:
     from debug_toolbar.middleware import DebugToolbarMiddleware
 

@@ -23,7 +23,7 @@ class Group(BaseModel):
         return self.__str__()
 
 
-class Acess(BaseModel):
+class Access(BaseModel):
     user = fields.ForeignKeyField("models.User")
     role = fields.CharField(max_length=256)
 

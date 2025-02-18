@@ -10,11 +10,12 @@ APPS = [
     "src.helper.logger.model",
     "src.helper.user.model",
     "src.helper.common.model",
+    "src.app.project.model",
 ]
 
 
-USE_MINIO = config("USE_MINIO", cast=bool, default=True)
-USE_REDIS = config("USE_REDIS", cast=bool, default=True)
+USE_MINIO = config("USE_MINIO", cast=bool, default=False)
+USE_REDIS = config("USE_REDIS", cast=bool, default=False)
 
 
 if USE_MINIO:

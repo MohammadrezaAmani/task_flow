@@ -68,15 +68,27 @@ class CheckList(BaseModel):
 
 class Task(BaseModel):
     name = fields.CharField(max_length=256)
-    board = fields.ForeignKeyField("models.Board", related_name="column")
+    board = fields.ForeignKeyField("models.Board", related_name="task")
     position = fields.FloatField(defult=1000.0)
     start_date = fields.DatetimeField(null=True)
     end_date = fields.DatetimeField(null=True)
     description = fields.TextField(null=True)
     is_show_on_card = fields.BooleanField(default=False)
-    color = fields.ForeignKeyField("models.BaseData", null=True)
-    progress = fields.ForeignKeyField("models.BaseData", null=True)
-    priority = fields.ForeignKeyField("models.BaseData", null=True)
+    color = fields.ForeignKeyField(
+        "models.BaseData",
+        null=True,
+        related_name="color",
+    )
+    progress = fields.ForeignKeyField(
+        "models.BaseData",
+        null=True,
+        related_name="progress",
+    )
+    priority = fields.ForeignKeyField(
+        "models.BaseData",
+        null=True,
+        related_name="priority",
+    )
 
     checklist = fields.ManyToManyField("models.CheckList", related_name="task")
     comment = fields.ManyToManyField("models.Comment", related_name="task")

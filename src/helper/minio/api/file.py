@@ -18,7 +18,7 @@ from src.helper import (
 )
 from src.helper.minio import File, FileCreateScheme, FileResponseScheme
 from src.helper.paginate import Paginated, Paginator
-from src.helper.user import Status
+from src.helper.scheme import Status
 from src.helper.user.model import User
 
 

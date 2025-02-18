@@ -27,8 +27,8 @@ class Tag(BaseModel):
 
 class Action(BaseModel):
     name = fields.CharField(max_length=128, unique=True)
-    user = fields.ForeignKeyField("moodels.User", related_name="action")
-    to = fields.ForeignKeyField("moodels.User", related_name="to_action")
+    user = fields.ForeignKeyField("models.User", related_name="action")
+    to = fields.ForeignKeyField("models.User", related_name="to_action")
     description = fields.TextField(null=True)
 
     def __str__(self):
@@ -40,7 +40,7 @@ class Action(BaseModel):
 
 class React(BaseModel):
     name = fields.CharField(max_length=128, unique=True)
-    user = fields.ForeignKeyField("moodels.User", related_name="react")
+    user = fields.ForeignKeyField("models.User", related_name="react")
     description = fields.TextField(null=True)
 
     def __str__(self):
@@ -52,7 +52,7 @@ class React(BaseModel):
 
 class Comment(BaseModel):
     text = fields.TextField()
-    user = fields.ForeignKeyField("moodels.User", related_name="comment")
+    user = fields.ForeignKeyField("models.User", related_name="comment")
     react = fields.ManyToManyField("models.React", related_name="comment")
     tag = fields.ManyToManyField("models.Tag", related_name="comment")
     vote = fields.IntField(null=True)
@@ -66,7 +66,7 @@ class Comment(BaseModel):
 
 class Category(BaseModel):
     name = fields.CharField(max_length=128, unique=True)
-    user = fields.ForeignKeyField("moodels.User", related_name="category")
+    user = fields.ForeignKeyField("models.User", related_name="category")
     react = fields.ManyToManyField("models.React", related_name="category")
     tag = fields.ManyToManyField("models.Tag", related_name="category")
     parent = fields.ManyToManyField("models.Category", related_name="child")

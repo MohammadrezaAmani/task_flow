@@ -8,13 +8,13 @@ from src.helper import (
     Filter,
     OrderBy,
     Paginator,
+    Status,
     create_filter_schema,
     log_action,
     login_required,
 )
 from src.helper.paginate import Paginated
 from src.helper.permission import Group, GroupCreateScheme, GroupResponseScheme
-from src.helper.user import Status
 
 router = APIRouter()
 

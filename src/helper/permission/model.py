@@ -21,3 +21,11 @@ class Group(BaseModel):
 
     def __repr__(self):
         return self.__str__()
+
+
+class Acess(BaseModel):
+    user = fields.ForeignKeyField("models.User")
+    role = fields.CharField(max_length=256)
+
+    class Meta:
+        table = "access"

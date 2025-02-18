@@ -1,4 +1,4 @@
-from .model import Action, Category, Comment, Language, React, Tag, Text
+from .model import Action, Category, Comment, Language, React, Tag
 from .scheme import (
     ActionCreateScheme,
     ActionResponseScheme,
@@ -12,13 +12,10 @@ from .scheme import (
     ReactResponseScheme,
     TagCreateScheme,
     TagResponseScheme,
-    TextCreateScheme,
-    TextResponseScheme,
 )
 
 __all__ = [
     "Language",
-    "Text",
     "Tag",
     "Action",
     "React",
@@ -26,8 +23,6 @@ __all__ = [
     "Category",
     "LanguageCreateScheme",
     "LanguageResponseScheme",
-    "TextCreateScheme",
-    "TextResponseScheme",
     "TagCreateScheme",
     "TagResponseScheme",
     "ActionCreateScheme",

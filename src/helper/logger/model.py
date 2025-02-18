@@ -11,6 +11,7 @@ class ActionEnum(str, Enum):
     UPDATE = "update"
     DELETE = "delete"
     VIEW = "view"
+    VIEW_ALL = "view_all"
 
 
 class Log(models.Model):

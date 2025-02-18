@@ -176,3 +176,6 @@ bionex.code-workspace
 *.sqlite3*
 
 temp
+
+.vscode
+.idea

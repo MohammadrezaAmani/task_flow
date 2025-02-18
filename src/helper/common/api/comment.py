@@ -3,7 +3,6 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from tortoise.queryset import Q
 
-from src.app.common import Comment, CommentCreateScheme, CommentResponseScheme
 from src.helper import (
     ActionEnum,
     Filter,
@@ -12,25 +11,31 @@ from src.helper import (
     Paginator,
     Status,
     create_filter_schema,
+    has_access,
     log_action,
     login_required,
 )
+from src.helper.common import Comment, CommentCreateScheme, CommentResponseScheme
+from src.helper.user.model import User
 
 router = APIRouter()
 
 CommentFilterSchema = create_filter_schema(Comment)
 
+MODEL_NAME: str = Comment._meta.db_table
+
 
 @router.get(
     "/", response_model=Paginated[CommentResponseScheme] | List[CommentResponseScheme]
 )
-@log_action(action=ActionEnum.VIEW.value, model=Comment._meta.db_table)
+@log_action(action=ActionEnum.VIEW_ALL.value, model=MODEL_NAME)
+@has_access(action=ActionEnum.VIEW_ALL.value, to=MODEL_NAME)
 async def get_comments_router(
     request: Request,
     page: int = Query(1, ge=1),
     limit: int = Query(10, le=100),
     filters: CommentFilterSchema = Depends(),  # type: ignore
-    user=Depends(login_required),
+    user: User = Depends(login_required),
     sort_by: list[str] = Query([]),
     pagination: bool = Query(True),
 ):
@@ -43,10 +48,11 @@ async def get_comments_router(
 
 
 @router.post("/", response_model=CommentResponseScheme)
-@log_action(action=ActionEnum.CREATE.value, model=Comment._meta.db_table)
+@log_action(action=ActionEnum.CREATE.value, model=MODEL_NAME)
+@has_access(action=ActionEnum.CREATE.value, to=MODEL_NAME)
 async def create_comment_router(
     object: CommentCreateScheme,
-    user=Depends(login_required),
+    user: User = Depends(login_required),
 ):
     return await object.create(
         Comment,
@@ -57,11 +63,12 @@ async def create_comment_router(
 
 
 @router.get("/{id}", response_model=CommentResponseScheme)
-@log_action(action=ActionEnum.VIEW.value, model=Comment._meta.db_table)
+@log_action(action=ActionEnum.VIEW.value, model=MODEL_NAME)
+@has_access(action=ActionEnum.VIEW.value, to=MODEL_NAME)
 async def get_comment_router(
     id: str,
     request: Request,
-    user=Depends(login_required),
+    user: User = Depends(login_required),
 ):
     objects = Comment.all()
     return await CommentResponseScheme.from_tortoise_orm(
@@ -71,11 +78,12 @@ async def get_comment_router(
 
 
 @router.put("/{id}", response_model=CommentResponseScheme)
-@log_action(action=ActionEnum.UPDATE.value, model=Comment._meta.db_table)
+@log_action(action=ActionEnum.UPDATE.value, model=MODEL_NAME)
+@has_access(action=ActionEnum.UPDATE.value, to=MODEL_NAME)
 async def update_comment_router(
     id: int,
     object: CommentCreateScheme,
-    user=Depends(login_required),
+    user: User = Depends(login_required),
 ):
     objects = Comment.all()
     return await object.update(
@@ -87,9 +95,10 @@ async def update_comment_router(
 
 
 @router.delete("/{id}", response_model=Status)
-@log_action(action=ActionEnum.DELETE.value, model=Comment._meta.db_table)
-async def delete_comment_router(id: int):
-    objects = Comment.all()
+@log_action(action=ActionEnum.DELETE.value, model=MODEL_NAME)
+@has_access(action=ActionEnum.DELETE.value, to=MODEL_NAME)
+async def delete_comment_router(id: int, user: User = Depends(login_required)):
+    objects = Comment.filter().all()
     deleted_count = await objects.filter(id=id).delete()
     if not deleted_count:
         raise HTTPException(status_code=404, detail=f"Comment {id} not found")

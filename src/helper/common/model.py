@@ -1,58 +1,80 @@
+from tortoise import fields
 
 from src.base import BaseModel
 
 
 class Language(BaseModel):
-    def __repr__(self):
-        return self.__str__()
+    name = fields.CharField(max_length=256)
+    description = fields.TextField(null=True)
+    data = fields.JSONField(null=True)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         table = "language"
 
 
-class Text(BaseModel):
-    def __repr__(self):
-        return self.__str__()
-
-    class Meta:
-        table = "text"
-
-
 class Tag(BaseModel):
-    def __repr__(self):
-        return self.__str__()
+    name = fields.CharField(max_length=128, unique=True)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         table = "tag"
 
 
 class Action(BaseModel):
-    def __repr__(self):
-        return self.__str__()
+    name = fields.CharField(max_length=128, unique=True)
+    user = fields.ForeignKeyField("moodels.User", related_name="action")
+    to = fields.ForeignKeyField("moodels.User", related_name="to_action")
+    description = fields.TextField(null=True)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         table = "action"
 
 
 class React(BaseModel):
-    def __repr__(self):
-        return self.__str__()
+    name = fields.CharField(max_length=128, unique=True)
+    user = fields.ForeignKeyField("moodels.User", related_name="react")
+    description = fields.TextField(null=True)
+
+    def __str__(self):
+        return self.emoji
 
     class Meta:
         table = "react"
 
 
 class Comment(BaseModel):
-    def __repr__(self):
-        return self.__str__()
+    text = fields.TextField()
+    user = fields.ForeignKeyField("moodels.User", related_name="comment")
+    react = fields.ManyToManyField("models.React", related_name="comment")
+    tag = fields.ManyToManyField("models.Tag", related_name="comment")
+    vote = fields.IntField(null=True)
+
+    def __str__(self):
+        return f"Comment {self.id} by User {self.user_id}"
 
     class Meta:
         table = "comment"
 
 
 class Category(BaseModel):
-    def __repr__(self):
-        return self.__str__()
+    name = fields.CharField(max_length=128, unique=True)
+    user = fields.ForeignKeyField("moodels.User", related_name="category")
+    react = fields.ManyToManyField("models.React", related_name="category")
+    tag = fields.ManyToManyField("models.Tag", related_name="category")
+    parent = fields.ManyToManyField("models.Category", related_name="child")
+    comment = fields.ManyToManyField("models.Comment", related_name="category")
+    description = fields.TextField(null=True)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         table = "category"
